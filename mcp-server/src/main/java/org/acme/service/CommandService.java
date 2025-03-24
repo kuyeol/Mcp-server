@@ -29,7 +29,7 @@ public class CommandService
 
   }
 
-  static String GIT_TOKEN ="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";
+private final static  String GIT_TOKEN ="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";
 
   public String executeCommand()
   throws Exception
