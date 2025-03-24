@@ -37,7 +37,7 @@ public class CommandService
                                 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
                                 """;
 
-  public String executeCommand()
+  public String executeCommand(String arg)
   throws Exception
   {
 
@@ -65,7 +65,7 @@ public class CommandService
 
     try {
       File file = new File(FILE_TO_BE_READ);
-      String response = bot.chat("Read the contents of the file " + file.getAbsolutePath());
+      String response = bot.chat(arg  + file.getAbsolutePath());
       System.out.println("RESPONSE: " + response);
       return response;
     } finally {
