@@ -42,7 +42,7 @@ public class CommandService
   {
 
     McpTransport transport = new StdioMcpTransport.Builder().command(
-      List.of("/usr/local/bin/docker", "run", "-e", GIT_TOKEN, "-i", "mcp/github")).logEvents(true).build();
+      List.of("/usr/local/bin/docker", "run", "-e", token, "-i", "mcp/github")).logEvents(true).build();
 
     McpClient mcpClient = new DefaultMcpClient.Builder().transport(transport).build();
 
