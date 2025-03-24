@@ -37,7 +37,7 @@ public class CommandService
   {
 
     McpTransport transport = new StdioMcpTransport.Builder().command(
-      List.of("git clone https://github.com/kuyeol/ai_quarkus-langchain4j.git ")).logEvents(true).build();
+      List.of("git clone https://github.com/kuyeol/ai_quarkus-langchain4j.git")).logEvents(true).build();
 
     McpClient mcpClient = new DefaultMcpClient.Builder().transport(transport).build();
 
@@ -47,7 +47,7 @@ public class CommandService
 
     try {
       String response = bot.chat(
-        "/samples/chatbot project run quarkus dev");
+        "git clone and /samples/chatbot project run quarkus dev");
       System.out.println("RESPONSE: " + response);
       return response;
     } finally {
