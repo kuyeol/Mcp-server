@@ -31,7 +31,7 @@ public class CommandService
   }
 
   private final static String GIT_TOKEN = """
-                                          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
+                                          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
                                           """;
 
   public String executeCommand()
