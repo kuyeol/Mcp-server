@@ -28,7 +28,13 @@ public class CommandService
     model = GoogleAiGeminiChatModel.builder().apiKey(API).modelName("gemini-2.0-flash-lite").temperature(0.0).build();
 
   }
-//  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
+
+  private static String token
+    = """
+      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
+      """;
+
+
   private final static String GIT_TOKEN = """
                                              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
                                           """;
@@ -47,7 +53,8 @@ public class CommandService
     Bot bot = AiServices.builder(Bot.class).chatLanguageModel(model).toolProvider(toolProvider).build();
 
     try {
-      String response = bot.chat("repo_owner : kuyeol Summarize the last 3 commits of the ai_quarkus-langchain4j  GitHub repository");
+      String response = bot.chat(
+        "repo_owner : kuyeol Summarize the last 3 commits of the ai_quarkus-langchain4j  GitHub repository");
       System.out.println("RESPONSE: " + response);
       return response;
     } finally {
