@@ -47,7 +47,7 @@ public class CommandService
 
     try {
       String response = bot.chat(
-        "repo_owner : kuyeol repo_name : mcp-server Summarize the last 30 commits of the this repository");
+        "repo_owner : zimop12@gmail.com , repo_name : mcp-server Summarize the last 30 commits of the this repository");
       System.out.println("RESPONSE: " + response);
       return response;
     } finally {
