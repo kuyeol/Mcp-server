@@ -14,7 +14,6 @@ import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
 
-
 @ApplicationScoped
 public class OllamaProvider
 {
@@ -41,6 +40,8 @@ public class OllamaProvider
     this.phi4 = OllamaChatModel.builder()
                                .baseUrl(BASE_URL)
                                .modelName("phi4-mini")
+                               .logRequests(true)
+                               .logResponses(true)
                                .temperature(0.0)
                                .timeout(Duration.ofSeconds(60000))
                                .build();
@@ -96,7 +97,7 @@ public class OllamaProvider
                                                .build();
   }
 
-  public ChatLanguageModel getLlama(){
+  public ChatLanguageModel getLlama() {
     return this.llama;
   }
 
