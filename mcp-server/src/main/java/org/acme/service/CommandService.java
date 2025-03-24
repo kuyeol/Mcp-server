@@ -24,13 +24,13 @@ public class CommandService
 
   public CommandService()
   {
-//    model = GoogleAiGeminiChatModel.builder()
-//                                   .apiKey(API)
-//                                   .allowCodeExecution(true)
-//                                   .modelName("gemini-2.0-flash-lite")
-//                                   .temperature(0.0)
-//                                   .build();
-    model = ollamaProvider.getGranite();
+    model = GoogleAiGeminiChatModel.builder()
+                                   .apiKey(API)
+                                   .allowCodeExecution(true)
+                                   .modelName("gemini-2.0-flash-lite")
+                                   .temperature(0.0)
+                                   .build();
+  //  model = ollamaProvider.getGranite();
   }
 
   private static String token = """

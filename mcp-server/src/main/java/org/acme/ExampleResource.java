@@ -1,5 +1,6 @@
 package org.acme;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -8,6 +9,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.acme.service.CommandService;
 
+
+@ApplicationScoped
 @Path("/hello")
 public class ExampleResource
 {
