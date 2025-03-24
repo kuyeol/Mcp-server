@@ -1,13 +1,12 @@
 package org.acme.agent;
 
-import io.quarkus.runtime.StartupEvent;
+
 import io.quarkus.websockets.next.*;
 import io.quarkus.websockets.next.WebSocket;
 import io.smallrye.common.annotation.Blocking;
-import io.vertx.core.http.HttpServer;
-import jakarta.enterprise.event.Observes;
 
-@WebSocketClient(path = "/c")
+
+
 public class ChatWebSocket
 {
 

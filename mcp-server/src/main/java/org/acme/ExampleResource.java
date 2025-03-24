@@ -1,6 +1,7 @@
 package org.acme;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -16,10 +17,12 @@ public class ExampleResource
 {
 
 
-  private  static CommandService commandService;
+  @Inject
+  CommandService commandService;
+
 
   public ExampleResource() {
-    this.commandService = new CommandService();
+
   }
 
 
@@ -37,8 +40,8 @@ public class ExampleResource
   throws Exception
   {
 
-   String rep =  commandService.executeCommand();
-   System.out.println(rep);
+    String rep = commandService.executeCommand();
+    System.out.println(rep);
     return Response.ok(rep).build();
   }
 

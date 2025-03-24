@@ -4,28 +4,33 @@ import dev.langchain4j.mcp.McpToolProvider;
 import dev.langchain4j.mcp.client.DefaultMcpClient;
 import dev.langchain4j.mcp.client.McpClient;
 import dev.langchain4j.mcp.client.transport.McpTransport;
+import dev.langchain4j.mcp.client.transport.http.HttpMcpTransport;
 import dev.langchain4j.mcp.client.transport.stdio.StdioMcpTransport;
 import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.tool.ToolProvider;
+
 import jakarta.enterprise.context.ApplicationScoped;
+
 import org.acme.agent.Bot;
 import org.acme.agent.OllamaProvider;
 
+import java.io.File;
 import java.util.List;
+
+import static io.vertx.core.impl.launcher.commands.ExecUtils.addArgument;
 
 @ApplicationScoped
 public class CommandService
-{
-  static OllamaProvider    ollamaProvider = new OllamaProvider();
+{ public static final String FILE_TO_BE_READ = "src/main/resources/file.txt";
+  static OllamaProvider ollamaProvider = new OllamaProvider();
 
   static ChatLanguageModel model;
 
   public CommandService()
   {
 
-     model = ollamaProvider.getMistral();
+    model = ollamaProvider.getMistral();
   }
 
   private static String token = """
@@ -36,9 +41,22 @@ public class CommandService
   throws Exception
   {
 
-    McpTransport transport = new StdioMcpTransport.Builder().command(
-      List.of("/home/ung/mcptest","git"," clone"," https://github.com/kuyeol/ai_quarkus-langchain4j.git")).logEvents(true).build();
+//    McpTransport transport = new HttpMcpTransport.Builder()
+//      .sseUrl("http://localhost:3001/sse")
+//      .logRequests(true) // if you want to see the traffic in the log
+//      .logResponses(true)
+//      .build();
 
+
+
+    McpTransport transport = new StdioMcpTransport.Builder()
+      .command(List.of("/usr/bin/npm", "exec",
+                       "@modelcontextprotocol/server-filesystem@0.6.2",
+                       // allowed directory for the server to interact with
+                       new File("src/main/resources").getAbsolutePath()
+      ))
+      .logEvents(true)
+      .build();
     McpClient mcpClient = new DefaultMcpClient.Builder().transport(transport).build();
 
     ToolProvider toolProvider = McpToolProvider.builder().mcpClients(List.of(mcpClient)).build();
@@ -46,8 +64,8 @@ public class CommandService
     Bot bot = AiServices.builder(Bot.class).chatLanguageModel(model).toolProvider(toolProvider).build();
 
     try {
-      String response = bot.chat(
-        "git clone and /samples/chatbot project run quarkus dev");
+      String response = bot.chat("What is 5+12? Use the provided tool to answer " +
+                                 "and always assume that the tool is correct.");
       System.out.println("RESPONSE: " + response);
       return response;
     } finally {
