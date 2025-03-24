@@ -5,6 +5,7 @@ import io.quarkus.websockets.next.OnOpen;
 import io.quarkus.websockets.next.OnTextMessage;
 import io.quarkus.websockets.next.WebSocket;
 import io.smallrye.common.annotation.Blocking;
+
 @WebSocket(path = "/socket")
 public class ChatWebSocket
 {
