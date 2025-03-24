@@ -2,9 +2,11 @@ package org.acme.agent;
 
 
 import dev.langchain4j.service.SystemMessage;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.SessionScoped;
 
-@SessionScoped
+
+@ApplicationScoped
 public interface Bot
 {
   @SystemMessage("""
