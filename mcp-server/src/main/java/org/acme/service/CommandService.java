@@ -30,7 +30,7 @@ public class CommandService
 //                                   .modelName("gemini-2.0-flash-lite")
 //                                   .temperature(0.0)
 //                                   .build();
-    model = ollamaProvider.getGroq();
+    model = ollamaProvider.getGranite();
   }
 
   private static String token = """
