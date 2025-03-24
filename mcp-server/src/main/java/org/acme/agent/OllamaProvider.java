@@ -64,14 +64,16 @@ public class OllamaProvider
                                 .baseUrl(BASE_URL)
                                 .modelName(MODEL_LLAMA3)
                                 .temperature(0.0)
-                                .timeout(Duration.ofSeconds(60000))
+                                .logRequests(true)
+                                .logResponses(true)
                                 .build();
 
     this.qwen = OllamaChatModel.builder()
                                .baseUrl(BASE_URL)
                                .modelName(MODEL_QWEN)
+                               .logRequests(true)
+                               .logResponses(true)
                                .temperature(0.1)
-                               .timeout(Duration.ofSeconds(60000))
                                .build();
 
 
