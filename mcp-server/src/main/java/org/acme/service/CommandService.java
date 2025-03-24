@@ -19,29 +19,18 @@ import java.util.List;
 public class CommandService
 {
   static OllamaProvider    ollamaProvider = new OllamaProvider();
-  static String            API            = """
-                                            AIzaSyCTFY-MBprutyvpjEodSBSBr0DaK4rcJU8
-                                            """;
+
   static ChatLanguageModel model;
 
   public CommandService()
   {
-    model = GoogleAiGeminiChatModel.builder()
-                                   .apiKey(API)
-                                   .modelName("gemini-2.0-flash")
-                                   .temperature(0.0)
-                                   .build();
-    //  model = ollamaProvider.getGranite();
+
+     model = ollamaProvider.getGroq();
   }
 
   private static String token = """
                                 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
                                 """;
-
-
-  private final static String GIT_TOKEN = """
-                                             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
-                                          """;
 
   public String executeCommand()
   throws Exception
