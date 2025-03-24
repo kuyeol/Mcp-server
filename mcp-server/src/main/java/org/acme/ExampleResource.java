@@ -5,6 +5,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.acme.service.CommandService;
 
 @Path("/hello")
@@ -29,12 +30,12 @@ public class ExampleResource
   @POST
   @Path("/post")
   @Produces(MediaType.TEXT_PLAIN)
-  public String post()
+  public Response post()
   throws Exception
   {
 
-    commandService.executeCommand();
-    return "Hello from Quarkus REST";
+   String rep =  commandService.executeCommand();
+    return Response.ok(rep).build();
   }
 
 
