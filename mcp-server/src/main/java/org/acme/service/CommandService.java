@@ -65,7 +65,7 @@ public class CommandService
 
     try {
       File file = new File(FILE_TO_BE_READ);
-      String response = bot.chat("Read the contents of the file and write java code " + file.getAbsolutePath());
+      String response = bot.chat("Read the contents of the file " + file.getAbsolutePath());
       System.out.println("RESPONSE: " + response);
       return response;
     } finally {
