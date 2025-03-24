@@ -29,12 +29,14 @@ public class CommandService
 
   }
 
+  static String GIT_TOKEN ="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";
+
   public String executeCommand()
   throws Exception
   {
 
     McpTransport transport = new StdioMcpTransport.Builder().command(
-                                                              List.of("/usr/local/bin/docker", "run", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "-i", "mcp/github"))
+                                                              List.of("/usr/local/bin/docker", "run", "-e", GIT_TOKEN, "-i", "mcp/github"))
                                                             .logEvents(true)
                                                             .build();
 
