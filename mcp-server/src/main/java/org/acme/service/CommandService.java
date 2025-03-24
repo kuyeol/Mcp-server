@@ -1,6 +1,5 @@
 package org.acme.service;
 
-
 import dev.langchain4j.mcp.McpToolProvider;
 import dev.langchain4j.mcp.client.DefaultMcpClient;
 import dev.langchain4j.mcp.client.McpClient;
@@ -25,14 +24,13 @@ public class CommandService
 
   public CommandService()
   {
-    model = GoogleAiGeminiChatModel.builder().apiKey(API).modelName("gemini-2.0-flash-lite").temperature(0.0).build();
+    model = GoogleAiGeminiChatModel.builder().apiKey(API).allowCodeExecution(true).modelName("gemini-2.0-flash-lite").temperature(0.0).build();
 
   }
 
-  private static String token
-    = """
-      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
-      """;
+  private static String token = """
+                                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
+                                """;
 
 
   private final static String GIT_TOKEN = """
@@ -54,7 +52,7 @@ public class CommandService
 
     try {
       String response = bot.chat(
-        "repo_owner : kuyeol Summarize the last 3 commits of the ai_quarkus-langchain4j  GitHub repository");
+        "repo_owner : kuyeol repo_name : ai_quarkus-langchain4j  Summarize the last 3 commits of the   GitHub repository");
       System.out.println("RESPONSE: " + response);
       return response;
     } finally {
