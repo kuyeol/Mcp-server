@@ -64,8 +64,8 @@ public class CommandService
     Bot bot = AiServices.builder(Bot.class).chatLanguageModel(model).toolProvider(toolProvider).build();
 
     try {
-      String response = bot.chat("What is 5+12? Use the provided tool to answer " +
-                                 "and always assume that the tool is correct.");
+      File file = new File(FILE_TO_BE_READ);
+      String response = bot.chat("Read the contents of the file " + file.getAbsolutePath());
       System.out.println("RESPONSE: " + response);
       return response;
     } finally {
