@@ -11,7 +11,6 @@ import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.tool.ToolProvider;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.acme.agent.Bot;
-import org.acme.agent.GithubProvider;
 import org.acme.agent.OllamaProvider;
 
 import java.util.List;
@@ -22,11 +21,10 @@ public class CommandService
   static OllamaProvider ollamaProvider = new OllamaProvider();
 
   static ChatLanguageModel model;
-  static ChatLanguageModel gpt4o = new GithubProvider().getGPT4o();
 
   public CommandService()
   {
-    //  this.model = ollamaProvider.getLlama();
+ this.model = ollamaProvider.getLlama();
 
   }
 
@@ -45,7 +43,7 @@ public class CommandService
 
     ToolProvider toolProvider = McpToolProvider.builder().mcpClients(List.of(mcpClient)).build();
 
-    Bot bot = AiServices.builder(Bot.class).chatLanguageModel(gpt4o).toolProvider(toolProvider).build();
+    Bot bot = AiServices.builder(Bot.class).chatLanguageModel(model).toolProvider(toolProvider).build();
 
     try {
       String response = bot.chat("Summarize the last 3 commits of the LangChain4j GitHub repository");
