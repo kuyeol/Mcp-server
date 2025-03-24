@@ -47,7 +47,7 @@ public class CommandService
     Bot bot = AiServices.builder(Bot.class).chatLanguageModel(model).toolProvider(toolProvider).build();
 
     try {
-      String response = bot.chat("repo_owner : kuyeol Summarize the last 3 commits of the  GitHub repository");
+      String response = bot.chat("repo_owner : kuyeol Summarize the last 3 commits of the ai_quarkus-langchain4j  GitHub repository");
       System.out.println("RESPONSE: " + response);
       return response;
     } finally {
