@@ -24,12 +24,12 @@ public class CommandService
 
   public CommandService()
   {
- this.model = ollamaProvider.getGroq();
+    model = ollamaProvider.getPhi4();
 
   }
 
   private final static String GIT_TOKEN = """
-                                          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
+                                             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
                                           """;
 
   public String executeCommand()
