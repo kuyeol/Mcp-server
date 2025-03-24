@@ -26,12 +26,13 @@ public class CommandService
 
   public CommandService()
   {
-  //  this.model = ollamaProvider.getLlama();
+    //  this.model = ollamaProvider.getLlama();
     this.gpt4o = new GithubProvider().getGPT4o();
   }
 
-  private final static String GIT_TOKEN
-    = "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";
+  private final static String GIT_TOKEN = """
+                                          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
+                                          """;
 
   public String executeCommand()
   throws Exception
