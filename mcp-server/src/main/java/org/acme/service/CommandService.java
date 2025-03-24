@@ -7,6 +7,7 @@ import dev.langchain4j.mcp.client.McpClient;
 import dev.langchain4j.mcp.client.transport.McpTransport;
 import dev.langchain4j.mcp.client.transport.stdio.StdioMcpTransport;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.tool.ToolProvider;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -18,13 +19,13 @@ import java.util.List;
 @ApplicationScoped
 public class CommandService
 {
-  static OllamaProvider ollamaProvider = new OllamaProvider();
-
+  static OllamaProvider    ollamaProvider = new OllamaProvider();
+  static String            API            = "AIzaSyCTFY-MBprutyvpjEodSBSBr0DaK4rcJU8";
   static ChatLanguageModel model;
 
   public CommandService()
   {
-    model = ollamaProvider.getPhi4();
+    model = GoogleAiGeminiChatModel.builder().apiKey(API).modelName("gemini-2.0-flash-lite").temperature(0.0).build();
 
   }
 
