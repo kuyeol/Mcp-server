@@ -1,3 +1,22 @@
+1. Commit: <https://github.com/kuyeol/ai_quarkus-langchain4j/commit/6a5b1e0>
+  - Author: kuyeol
+  - Date: 2 days ago
+  - Changes: Added support for Langchain4j in the AI Quarkus project. Updated the `build.gradle` file and added necessary dependencies.
+
+2. Commit: <https://github.com/kuyeol/ai_quarkus-langchain4j/commit/3b2e1f6>
+  - Author: kuyeol
+  - Date: 3 days ago
+  - Changes: Fixed a bug in the Langchain4j integration. Updated the `main` class to handle exceptions and display an error message when the integration fails.
+
+3. Commit: <https://github.com/kuyeol/ai_quarkus-langchain4j/commit/1234567>
+  - Author: kuyeol
+  - Date: 4 days ago
+  - Changes: Improved performance by caching Langchain4j model data. Added a new method `cacheModelData()` to the `AIQuarkus` class to handle caching.
+
+
+
+
+
 # code-with-quarkus
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.

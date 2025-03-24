@@ -19,7 +19,9 @@ import java.util.List;
 public class CommandService
 {
   static OllamaProvider    ollamaProvider = new OllamaProvider();
-  static String            API            = "AIzaSyCTFY-MBprutyvpjEodSBSBr0DaK4rcJU8";
+  static String            API            = """
+                                            AIzaSyCTFY-MBprutyvpjEodSBSBr0DaK4rcJU8
+                                            """;
   static ChatLanguageModel model;
 
   public CommandService()
@@ -30,7 +32,7 @@ public class CommandService
                                    .modelName("gemini-2.0-flash-lite")
                                    .temperature(0.0)
                                    .build();
-  //  model = ollamaProvider.getGranite();
+    //  model = ollamaProvider.getGranite();
   }
 
   private static String token = """
