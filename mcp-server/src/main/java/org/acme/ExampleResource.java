@@ -36,11 +36,11 @@ public class ExampleResource
   @POST
   @Path("/command")
   @Produces(MediaType.TEXT_PLAIN)
-  public Response post()
+  public Response post(String arg)
   throws Exception
   {
 
-    String rep = commandService.executeCommand();
+    String rep = commandService.executeCommand(arg);
     System.out.println(rep);
     return Response.ok(rep).build();
   }
