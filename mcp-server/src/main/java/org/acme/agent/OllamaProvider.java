@@ -34,9 +34,18 @@ public class OllamaProvider
   private final ChatLanguageModel          groq;
   private final ChatLanguageModel          granite3;
   private final ChatLanguageModel          phi4;
+  private final ChatLanguageModel          mistral;
 
   public OllamaProvider()
   {
+    this.mistral = OllamaChatModel.builder()
+                                  .baseUrl(BASE_URL)
+                                  .modelName("mistral")
+                                  .logRequests(true)
+                                  .logResponses(true)
+                                  .temperature(0.0)
+                                  .build();
+
     this.phi4 = OllamaChatModel.builder()
                                .baseUrl(BASE_URL)
                                .modelName("phi4-mini")
@@ -96,6 +105,11 @@ public class OllamaProvider
                                                .modelName(MODEL_GEMMA3)
                                                .temperature(0.0)
                                                .build();
+  }
+
+
+  public ChatLanguageModel getMistral(){
+    return this.mistral;
   }
 
   public ChatLanguageModel getLlama() {

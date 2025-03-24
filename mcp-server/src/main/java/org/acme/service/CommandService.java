@@ -25,7 +25,7 @@ public class CommandService
   public CommandService()
   {
 
-     model = ollamaProvider.getLlama();
+     model = ollamaProvider.getMistral();
   }
 
   private static String token = """
