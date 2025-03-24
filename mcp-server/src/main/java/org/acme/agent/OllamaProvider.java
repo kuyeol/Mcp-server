@@ -43,7 +43,6 @@ public class OllamaProvider
                                .logRequests(true)
                                .logResponses(true)
                                .temperature(0.0)
-                               .timeout(Duration.ofSeconds(60000))
                                .build();
 
     this.granite3 = OllamaChatModel.builder()
