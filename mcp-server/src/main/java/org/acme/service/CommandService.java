@@ -18,7 +18,7 @@ import java.util.List;
 @ApplicationScoped
 public class CommandService
 {
-  static OllamaProvider ollamaProvider;
+  static OllamaProvider ollamaProvider = new OllamaProvider();
 
   static ChatLanguageModel model;
 

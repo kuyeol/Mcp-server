@@ -96,6 +96,10 @@ public class OllamaProvider
                                                .build();
   }
 
+  public ChatLanguageModel getLlama(){
+    return this.llama;
+  }
+
   public ChatLanguageModel getPhi4() {
     return this.phi4;
   }
