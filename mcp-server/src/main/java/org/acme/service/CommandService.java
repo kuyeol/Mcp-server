@@ -22,12 +22,12 @@ public class CommandService
   static OllamaProvider ollamaProvider = new OllamaProvider();
 
   static ChatLanguageModel model;
-  static ChatLanguageModel gpt4o;
+  static ChatLanguageModel gpt4o = new GithubProvider().getGPT4o();
 
   public CommandService()
   {
     //  this.model = ollamaProvider.getLlama();
-    this.gpt4o = new GithubProvider().getGPT4o();
+
   }
 
   private final static String GIT_TOKEN = """
