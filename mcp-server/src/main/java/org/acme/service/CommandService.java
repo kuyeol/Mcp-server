@@ -37,7 +37,7 @@ public class CommandService
   {
 
     McpTransport transport = new StdioMcpTransport.Builder().command(
-      List.of("/usr/local/bin/docker","git"," clone"," https://github.com/kuyeol/ai_quarkus-langchain4j.git")).logEvents(true).build();
+      List.of("/home/ung/mcptest","git"," clone"," https://github.com/kuyeol/ai_quarkus-langchain4j.git")).logEvents(true).build();
 
     McpClient mcpClient = new DefaultMcpClient.Builder().transport(transport).build();
 
