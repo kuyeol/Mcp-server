@@ -28,7 +28,7 @@ public class ExampleResource
 
 
   @POST
-  @Path("/post")
+  @Path("/command")
   @Produces(MediaType.TEXT_PLAIN)
   public Response post()
   throws Exception
