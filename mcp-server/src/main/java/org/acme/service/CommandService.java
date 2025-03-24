@@ -29,7 +29,7 @@ public class CommandService
 
   }
 
-  public void executeCommand()
+  public String executeCommand()
   throws Exception
   {
 
@@ -47,6 +47,7 @@ public class CommandService
     try {
       String response = bot.chat("Summarize the last 3 commits of the LangChain4j GitHub repository");
       System.out.println("RESPONSE: " + response);
+      return response;
     } finally {
       mcpClient.close();
     }
