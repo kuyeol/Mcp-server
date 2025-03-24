@@ -35,6 +35,7 @@ public class ExampleResource
   {
 
    String rep =  commandService.executeCommand();
+   System.out.println(rep);
     return Response.ok(rep).build();
   }
 
