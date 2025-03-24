@@ -25,7 +25,7 @@ public class CommandService
 
   public CommandService()
   {
-    this.model = ollamaProvider.providesModel("llama");
+    this.model = ollamaProvider.getGroq();
 
   }
 
