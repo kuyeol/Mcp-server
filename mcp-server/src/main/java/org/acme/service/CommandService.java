@@ -28,8 +28,7 @@ public class CommandService
   {
     model = GoogleAiGeminiChatModel.builder()
                                    .apiKey(API)
-                                   .allowCodeExecution(true)
-                                   .modelName("gemini-2.0-flash-lite")
+                                   .modelName("gemini-2.0-flash")
                                    .temperature(0.0)
                                    .build();
     //  model = ollamaProvider.getGranite();
