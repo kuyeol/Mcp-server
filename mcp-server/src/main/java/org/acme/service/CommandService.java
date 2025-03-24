@@ -57,7 +57,7 @@ public class CommandService
 
     try {
       String response = bot.chat(
-        "repo_owner : kuyeol repo_name : ai_quarkus-langchain4j  Summarize the last 3 commits of the   GitHub repository");
+        "repo_owner : kuyeol repo_name : ai_quarkus-langchain4j Summarize the last 3 commits of the kuyeol/ai_quarkus-langchain4j repository");
       System.out.println("RESPONSE: " + response);
       return response;
     } finally {
