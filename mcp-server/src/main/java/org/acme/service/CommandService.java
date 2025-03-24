@@ -25,7 +25,7 @@ public class CommandService
   public CommandService()
   {
 
-     model = ollamaProvider.getGroq();
+     model = ollamaProvider.getGranite();
   }
 
   private static String token = """
@@ -47,7 +47,7 @@ public class CommandService
 
     try {
       String response = bot.chat(
-        "repo_owner : kuyeol repo_name : ai_quarkus-langchain4j Summarize the last 3 commits of the kuyeol/ai_quarkus-langchain4j repository");
+        " Summarize the last 30 commits of the kuyeol/ai_quarkus-langchain4j repository");
       System.out.println("RESPONSE: " + response);
       return response;
     } finally {
