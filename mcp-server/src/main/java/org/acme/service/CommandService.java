@@ -27,7 +27,7 @@ public class CommandService
   public CommandService()
   {
     this.model = ollamaProvider.getLlama();
-    this.gpt4o = new GithubProvider(GIT_TOKEN).getGPT4o();
+    this.gpt4o = new GithubProvider().getGPT4o();
   }
 
   private final static String GIT_TOKEN
