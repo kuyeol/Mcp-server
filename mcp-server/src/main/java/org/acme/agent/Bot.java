@@ -26,4 +26,12 @@ public interface Bot
   String chat(@UserMessage String msg);
 
 
+
+
+
+
+
+
+
+
 }
