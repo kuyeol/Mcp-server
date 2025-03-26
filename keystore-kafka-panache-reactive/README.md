@@ -1,3 +1,9 @@
+# // TODO : 
+- Database Entity Structure 
+- Request-> Incomming : return -> Outgoing -> Response
+- adaptive -> adaptive ->
+- Mendel ,  DNA . (AA , aa ) -> Aa : A
+
 # 에이전트 생성
 
 테이블에서 에이전트 정보 호출 후 에이전트 생성시 아이디를 부여하여 기록 관리
