@@ -6,12 +6,13 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 
 import io.smallrye.mutiny.Uni;
+import org.acme.panache.entity.ModelProvider;
 
 @Path("/prices")
 public class PriceResource {
 
     @GET
-    public Uni<List<Price>> getAllPrices() {
-        return Price.listAll();
+    public Uni<List<ModelProvider>> getAllPrices() {
+        return ModelProvider.listAll();
     }
 }
