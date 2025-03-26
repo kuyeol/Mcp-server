@@ -13,7 +13,8 @@ public class ModelProvider extends PanacheEntity
 {
 
   public ProviderType providerType;
-  public ModelType    modelType;
+
+  public ModelType modelType;
 
   public List<ModelInfo> modelInfos = new ArrayList<>();
   public List<ApiValue>  apiValues  = new ArrayList<>();
