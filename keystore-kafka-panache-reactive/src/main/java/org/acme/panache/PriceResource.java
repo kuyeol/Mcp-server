@@ -1,38 +1,46 @@
 package org.acme.panache;
 
-import java.util.List;
-
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-
-import io.smallrye.mutiny.Uni;
-import org.acme.panache.constant.ModelType;
-import org.acme.panache.constant.ProviderType;
+import jakarta.ws.rs.core.Response;
+import org.acme.panache.dao.ProviderDAO;
+import org.acme.panache.entity.ModelInfo;
 import org.acme.panache.entity.ModelProvider;
-import org.jboss.logging.annotations.Pos;
 
 @Path("/prices")
-public class PriceResource {
-
-    @GET
-    public Uni<List<ModelProvider>> getAllPrices() {
-        return ModelProvider.listAll();
-    }
+@ApplicationScoped
+public class PriceResource
+{
 
 
-
-    @POST
-    public Uni<ModelProvider> createPrice(ModelProvider price) {
-        ModelProvider provider = new ModelProvider();
-
-        provider.apiValues=price.apiValues;
-        provider.modelType=ModelType.LLM;
-        provider.providerType=ProviderType.OLLAMA;
-        provider.modelInfos=price.modelInfos;
+  private final ProviderDAO providerDao;
 
 
-        return provider.persistAndFlush();
-    }
+  public PriceResource(ProviderDAO providerDAO) {
+    this.providerDao = providerDAO;
+
+  }
+
+  @GET
+  public Response get() {
+
+
+    return Response.ok().build();
+  }
+
+
+  @POST
+  @Path("/addModel")
+  public Response addModelInfo(String STR) {
+
+
+    ModelProvider provider = providerDao.addProvider("da");
+
+
+    return Response.ok(provider).build();
+  }
+
 
 }

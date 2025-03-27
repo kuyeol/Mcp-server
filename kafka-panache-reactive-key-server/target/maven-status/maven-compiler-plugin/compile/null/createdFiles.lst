@@ -1,0 +1,4 @@
+org\acme\panache\PriceResource.class
+org\acme\panache\PriceStorage.class
+org\acme\panache\Price.class
+org\acme\panache\PriceGenerator.class

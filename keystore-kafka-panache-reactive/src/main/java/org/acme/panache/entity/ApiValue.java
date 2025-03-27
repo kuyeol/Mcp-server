@@ -1,19 +1,20 @@
 package org.acme.panache.entity;
 
 
-import io.quarkus.hibernate.reactive.panache.PanacheEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import org.acme.panache.constant.ApiType;
 
 @Entity
-public class ApiValue extends PanacheEntity
+public class ApiValue
 {
+  @Id
+  @GeneratedValue
+  public String  id;
   public ApiType apiType;
   public String  value;
-  @ManyToOne
-  public ModelProvider modelProvider;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  public ModelProvider provider;
 
 
 }
