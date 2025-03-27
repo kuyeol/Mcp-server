@@ -6,6 +6,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import org.acme.panache.dao.ProviderDAO;
+import org.acme.panache.dto.ApiRecord;
 import org.acme.panache.entity.ModelInfo;
 import org.acme.panache.entity.ModelProvider;
 
@@ -13,34 +14,28 @@ import org.acme.panache.entity.ModelProvider;
 @ApplicationScoped
 public class PriceResource
 {
-
-
   private final ProviderDAO providerDao;
 
-
-  public PriceResource(ProviderDAO providerDAO) {
+  public PriceResource(ProviderDAO providerDAO)
+  {
     this.providerDao = providerDAO;
-
   }
 
   @GET
-  public Response get() {
-
-
-    return Response.ok().build();
+  public Response get()
+  {
+    return Response.ok()
+                   .build();
   }
-
 
   @POST
   @Path("/addModel")
-  public Response addModelInfo(String STR) {
-
-
+  public Response addModelInfo(ApiRecord apiRecord)
+  {
     ModelProvider provider = providerDao.addProvider("da");
 
-
-    return Response.ok(provider).build();
+    return Response.ok(provider)
+                   .build();
   }
-
 
 }
