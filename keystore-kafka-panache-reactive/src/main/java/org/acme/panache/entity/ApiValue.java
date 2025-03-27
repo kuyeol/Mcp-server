@@ -17,4 +17,43 @@ public class ApiValue
   public ModelProvider provider;
 
 
+  public String getId()
+  {
+    return id;
+  }
+
+  public void setId(String id)
+  {
+    this.id = id;
+  }
+
+  public ApiType getApiType()
+  {
+    return apiType;
+  }
+
+  public void setApiType(ApiType apiType)
+  {
+    this.apiType = apiType;
+  }
+
+  public String getValue()
+  {
+    return value;
+  }
+
+  public void setValue(String value)
+  {
+    this.value = value;
+  }
+
+  public ModelProvider getProvider()
+  {
+    return provider;
+  }
+
+  public void setProvider(ModelProvider provider)
+  {
+    this.provider = provider;
+  }
 }

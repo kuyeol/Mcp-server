@@ -1,3 +1,6 @@
+__https://shiftasia.com/community/kafka-and-intergrate-with-quarkus__
+
+
 # // TODO : 
 - Database Entity Structure 
 - Request-> Incomming : return -> Outgoing -> Response
