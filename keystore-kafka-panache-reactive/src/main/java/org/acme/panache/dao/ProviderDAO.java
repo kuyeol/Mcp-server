@@ -30,7 +30,7 @@ public class ProviderDAO
     public UserRecord registerUser(UserRecord user) {
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setId();
+        userEntity.setId("1");
         userEntity.setName(user.name());
         em.persist(userEntity);
         return user.from(userEntity);
