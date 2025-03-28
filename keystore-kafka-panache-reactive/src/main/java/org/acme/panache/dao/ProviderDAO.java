@@ -42,6 +42,7 @@ public class ProviderDAO
         UserEntity ref = em.getReference(UserEntity.class, provider.userId());
 
         AgentProviderEntity agentProvider = provider.toAgentProviderEntity();
+        agentProvider.setId("qq");
         ref.addProvider(agentProvider);
         em.persist(ref);
 
