@@ -3,77 +3,78 @@ package org.acme.panache.dao;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import org.acme.panache.constant.ProviderType;
-import org.acme.panache.entity.ModelInfo;
-import org.acme.panache.entity.ModelProvider;
+import org.acme.panache.entity.AgentProviderEntity;
+import org.acme.panache.entity.UserEntity;
+import org.acme.panache.record.ProviderRecord;
+import org.acme.panache.record.UserRecord;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class ProviderDAO
 {
-  private static EntityManager em;
 
-  private boolean existsProvider = false;
+    private static EntityManager em;
 
-  public ProviderDAO(EntityManager em)
-  {
+    private boolean isProvider = false;
 
-    ProviderDAO.em = em;
-  }
-
-  @Transactional
-  public boolean exitsProvider(String id)
-  {
-    if (em.find(ModelProvider.class,
-                id) != null) {
-      this.existsProvider = true;
-      return existsProvider;
-    } else {
-      return existsProvider;
+    public ProviderDAO(EntityManager em)
+    {
+        ProviderDAO.em = em;
     }
-  }
 
-  public ModelProvider insertProvider()
-  {
+    // new Entity [ User , Provider , Agent]
+    //중복은 jpa 유니크 어노테이션 사용
+    @Transactional
+    public UserRecord registerUser(UserRecord user) {
 
-    ModelProvider provider = new ModelProvider();
-    provider.setProviderType(ProviderType.OLLAMA);
-    em.persist(provider);
-
-    return em.getReference(ModelProvider.class,
-                           provider.id);
-  }
-
-  @Transactional
-  public ModelProvider addProvider(String id)
-  {
-    if (!exitsProvider(id)) {
-      ModelProvider provider = insertProvider();
-
-      ModelInfo modelInfo = new ModelInfo();
-      modelInfo.setModelName("asdf");
-      provider.modelInfos.add(modelInfo);
-      em.persist(provider);
-
-      em.flush();
-      return provider;
-
-    } else {
-      System.out.println(exitsProvider(id));
-      return em.find(ModelProvider.class,
-                     id);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId();
+        userEntity.setName(user.name());
+        em.persist(userEntity);
+        return user.from(userEntity);
     }
-  }
 
+    @Transactional
+    public ProviderRecord addProvider(ProviderRecord provider) {
 
+        UserEntity ref = em.getReference(UserEntity.class, provider.userId());
 
+        AgentProviderEntity agentProvider = provider.toAgentProviderEntity();
+        agentProvider.setId("qq");
+        ref.addProvider(agentProvider);
+        em.persist(ref);
 
+        return provider.from(agentProvider);
+    }
 
-  // new Entity
-  // find Entity
-  // updata Entity
-  // delete Entity
+    public static void main(String[] args) {
 
+        AgentProviderEntity agentProvider  = new AgentProviderEntity();
+        AgentProviderEntity agentProvider2 = new AgentProviderEntity();
+        agentProvider.setName("agentProvider");
+        agentProvider2.setName("agentProvider2");
+        List<AgentProviderEntity> agentProviders = new ArrayList<>();
+        agentProviders.add(agentProvider2);
+        agentProviders.add(agentProvider);
 
+        UserRecord userRecord = new UserRecord.Builder().setAgent(agentProviders).setId("dd").setName("naem").build();
+        userRecord.agents().add(agentProvider);
+        userRecord.agents().add(agentProvider2);
 
+        ProviderDAO providerDAO = new ProviderDAO(ProviderDAO.em);
+        userRecord = providerDAO.registerUser(userRecord);
+        System.out.println(userRecord);
+
+        UserEntity userEntity = new UserEntity();
+
+    }
+
+    //public
+
+    // find Entity
+    // updata Entity
+    // delete Entity
 
 }

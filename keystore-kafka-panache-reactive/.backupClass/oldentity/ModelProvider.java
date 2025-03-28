@@ -1,4 +1,4 @@
-package org.acme.panache.entity;
+package org.acme.panache.oldentity;
 
 import jakarta.persistence.*;
 import org.acme.panache.constant.ModelType;
@@ -22,7 +22,7 @@ public class ModelProvider
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "provider")
   @BatchSize(size = 20)
-  public List<ModelInfo> modelInfos = new ArrayList<>();
+  public List<ModelInfo> modelParameters = new ArrayList<>();
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "provider")
   @BatchSize(size = 20)
@@ -59,14 +59,9 @@ public class ModelProvider
     this.modelType = modelType;
   }
 
-  public List<ModelInfo> getModelInfos()
+  public List<ModelInfo> getModelParameters()
   {
-    return modelInfos;
-  }
-
-  public void setModelInfos(List<ModelInfo> modelInfos)
-  {
-    this.modelInfos = modelInfos;
+    return modelParameters;
   }
 
   public List<ApiValue> getApiValues()
@@ -74,8 +69,14 @@ public class ModelProvider
     return apiValues;
   }
 
-  public void setApiValues(List<ApiValue> apiValues)
+  public void addAttribute(ApiValue apiValue)
   {
-    this.apiValues = apiValues;
+    this.apiValues.add(apiValue);
   }
+
+  public void addAttribute(ModelInfo modelInfo) {
+    this.modelParameters.add(modelInfo);
+  }
+
+
 }
