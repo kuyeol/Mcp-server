@@ -12,7 +12,7 @@ public record ProviderRecord(String id, String userId, String name, String baseU
 
     public AgentProviderEntity toAgentProviderEntity() {
         AgentProviderEntity agentProviderEntity = new AgentProviderEntity();
-        agentProviderEntity.setId();
+        agentProviderEntity.setId(id);
         agentProviderEntity.setName(name);
         agentProviderEntity.setBaseUrl(baseUrl);
         agentProviderEntity.setApiKey(apiKey);
