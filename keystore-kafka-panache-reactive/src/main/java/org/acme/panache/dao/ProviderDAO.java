@@ -33,47 +33,46 @@ public class ProviderDAO
         userEntity.setId("1");
         userEntity.setName(user.name());
         em.persist(userEntity);
-        return user.from(userEntity);
+        return new UserRecord(userEntity.getId(),userEntity.getName());
     }
 
     @Transactional
-    public ProviderRecord addProvider(ProviderRecord provider) {
+    public ProviderRecord addProvider(ProviderRecord provider,String userId) {
 
-        UserEntity ref = em.getReference(UserEntity.class, provider.userId());
+        UserEntity ref = em.getReference(UserEntity.class, userId);
 
         AgentProviderEntity agentProvider = provider.toAgentProviderEntity();
         agentProvider.setId("qq");
+        agentProvider.setUser(ref);
         ref.addProvider(agentProvider);
         em.persist(ref);
 
         return provider.from(agentProvider);
     }
 
+
+
+
+
+
+
     public static void main(String[] args) {
-
-        AgentProviderEntity agentProvider  = new AgentProviderEntity();
-        AgentProviderEntity agentProvider2 = new AgentProviderEntity();
-        agentProvider.setName("agentProvider");
-        agentProvider2.setName("agentProvider2");
-        List<AgentProviderEntity> agentProviders = new ArrayList<>();
-        agentProviders.add(agentProvider2);
-        agentProviders.add(agentProvider);
-
-        UserRecord userRecord = new UserRecord.Builder().setAgent(agentProviders).setId("dd").setName("naem").build();
-        userRecord.agents().add(agentProvider);
-        userRecord.agents().add(agentProvider2);
-
-        ProviderDAO providerDAO = new ProviderDAO(ProviderDAO.em);
-        userRecord = providerDAO.registerUser(userRecord);
-        System.out.println(userRecord);
-
-        UserEntity userEntity = new UserEntity();
 
     }
 
-    //public
+
 
     // find Entity
+
+    public UserRecord findUser(String userId) {
+        UserEntity userEntity = em.getReference(UserEntity.class, userId);
+
+
+        return new UserRecord(userEntity.getId(),userEntity.getName());
+    }
+
+
+
     // updata Entity
     // delete Entity
 

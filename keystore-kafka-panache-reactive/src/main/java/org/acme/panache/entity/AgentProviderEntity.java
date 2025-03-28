@@ -18,8 +18,11 @@ public class AgentProviderEntity
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USERENTITY_NAME")
+    @JoinColumn(name = "USERENTITY_ID")
     private UserEntity user;
+
+
+
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "provider")
     @BatchSize(size = 20)
