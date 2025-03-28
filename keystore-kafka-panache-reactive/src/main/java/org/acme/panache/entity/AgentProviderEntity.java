@@ -35,8 +35,8 @@ public class AgentProviderEntity
         return id;
     }
 
-    public void setId() {
-        this.id = IdGenerater.create();
+    public void setId(String id) {
+        this.id = id;
     }
 
     public UserEntity getUser() {
