@@ -1,4 +1,4 @@
-package org.acme.panache.entity;
+package org.acme.panache.oldentity;
 
 
 import jakarta.persistence.*;
