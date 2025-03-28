@@ -5,6 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 import org.acme.panache.dao.ProviderDAO;
 import org.acme.panache.record.ProviderRecord;
@@ -22,14 +23,13 @@ public class PriceResource
   }
 
 
-
-
   @GET
   public Response get()
   {
+    UserRecord re = providerDao.findUser("1");
 
-
-    return Response.ok().build();
+    return Response.ok(re)
+                   .build();
   }
 
   @POST
@@ -37,22 +37,25 @@ public class PriceResource
   public Response registerUser(UserRecord user)
   {
 
-    user=providerDao.registerUser(user);
+    user = providerDao.registerUser(user);
 
-    return Response.ok(user).build();
+    return Response.ok(user)
+                   .build();
   }
 
   @POST
-  @Path("/addprovider")
-  public Response addProvider(ProviderRecord provider)
+  @Path("/{userId}addprovider")
+  public Response addProvider(@PathParam("userId") String userId,
+                              ProviderRecord provider)
   {
 
 
-    provider =providerDao.addProvider(provider);
+    provider = providerDao.addProvider(provider,
+                                       userId);
 
-    return Response.ok(provider).build();
+    return Response.ok(provider)
+                   .build();
   }
-
 
 
 }

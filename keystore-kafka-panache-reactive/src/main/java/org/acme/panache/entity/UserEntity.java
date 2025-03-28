@@ -3,6 +3,8 @@ package org.acme.panache.entity;
 import jakarta.persistence.*;
 import org.acme.panache.util.IdGenerater;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -16,7 +18,9 @@ public class UserEntity
     @Access(AccessType.PROPERTY)
     private String id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+
+    @Fetch(FetchMode.SELECT)
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "user")
     @BatchSize(size = 20)
     private List<AgentProviderEntity> agentProviders = new LinkedList<>();
 
