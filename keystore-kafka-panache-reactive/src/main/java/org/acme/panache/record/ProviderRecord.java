@@ -6,7 +6,7 @@ public record ProviderRecord(String id, String userId, String name, String baseU
 {
 
     public ProviderRecord from(AgentProviderEntity provider) {
-        return new ProviderRecord(provider.getId(), provider.getUser().getId(), provider.getName(),
+        return new ProviderRecord(provider.getId(), provider.getUser(), provider.getName(),
                                   provider.getBaseUrl(), provider.getApiKey());
     }
 
