@@ -1,7 +1,6 @@
 package org.acme.panache.entity;
 
 import jakarta.persistence.*;
-import org.acme.panache.util.IdGenerater;
 import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
@@ -9,7 +8,13 @@ import java.util.List;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "getProviderByUserName", query = "SELECT p FROM AgentProviderEntity p WHERE p.user =:user") })
+        @NamedQuery(name = "findByUserName", query = "SELECT p FROM AgentProviderEntity p WHERE p.user =:user"),
+        @NamedQuery(name = "findByProviderName", query = "SELECT p FROM AgentProviderEntity p WHERE p.name =:name") })
+
+@Table(name = "AgentProviderEntity", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "BASE_URL", "NAME" }),
+        //  @UniqueConstraint(columnNames = { "REALM_ID", "EMAIL_CONSTRAINT" })
+})
 public class AgentProviderEntity
 {
 
@@ -21,15 +26,14 @@ public class AgentProviderEntity
     @JoinColumn(name = "USERENTITY_ID")
     private UserEntity user;
 
-
-
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "provider")
     @BatchSize(size = 20)
     private List<AgentEntity> agents = new ArrayList<AgentEntity>();
 
+    @Column(name = "NAME")
     private String name;
 
+    @Column(name = "BASE_URL")
     private String baseUrl;
 
     private String apiKey;
