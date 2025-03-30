@@ -23,7 +23,7 @@ public class PriceGenerator
   {
     return Multi.createFrom()
                 .ticks()
-                .every(Duration.ofSeconds(5))
+                .every(Duration.ofNanos(1))
                 .map(tick -> random.nextInt(100));
   }
 

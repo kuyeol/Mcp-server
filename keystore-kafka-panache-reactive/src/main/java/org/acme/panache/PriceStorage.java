@@ -13,7 +13,7 @@ public class PriceStorage
   @ActivateRequestContext
   Uni<Void> store(int priceInUsd) {
 
-System.out.println("Storing price " + priceInUsd);
+    System.out.println("Storing price " + priceInUsd);
     return Uni.createFrom().voidItem();
   }
 
