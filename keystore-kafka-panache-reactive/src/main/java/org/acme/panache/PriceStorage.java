@@ -9,12 +9,18 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 public class PriceStorage
 {
 
-  @Incoming("prices")
-  @ActivateRequestContext
-  Uni<Void> store(int priceInUsd) {
+    static double price;
 
-    System.out.println("Storing price " + priceInUsd);
-    return Uni.createFrom().voidItem();
-  }
+    @Incoming("prices")
+    @ActivateRequestContext
+    Uni<Void> store(int priceInUsd) {
+
+        price += ( priceInUsd * priceInUsd );
+        System.out.println("Storing price " + price);
+        return Uni.createFrom().voidItem();
+    }
+
+
+
 
 }
