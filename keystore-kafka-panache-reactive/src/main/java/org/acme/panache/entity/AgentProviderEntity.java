@@ -8,13 +8,8 @@ import java.util.List;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = "findByUserName", query = "SELECT p FROM AgentProviderEntity p WHERE p.user =:user"),
-        @NamedQuery(name = "findByProviderName", query = "SELECT p FROM AgentProviderEntity p WHERE p.name =:name") })
+        @NamedQuery(name = "findByUserId", query = "SELECT DISTINCT p FROM AgentProviderEntity p WHERE p.userId =: userId") })
 
-@Table(name = "AgentProviderEntity", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "BASE_URL", "NAME" }),
-        //  @UniqueConstraint(columnNames = { "REALM_ID", "EMAIL_CONSTRAINT" })
-})
 public class AgentProviderEntity
 {
 
@@ -22,11 +17,14 @@ public class AgentProviderEntity
     @Access(AccessType.PROPERTY)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USERENTITY_ID")
+    @ManyToOne(fetch = FetchType.LAZY ,optional = false)
+    @JoinColumn(name = "UserEntity_ID" , nullable = false)
     private UserEntity user;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "provider")
+    @Column(name = "userId",nullable = false)
+    private String userId;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "provider", fetch = FetchType.LAZY)
     @BatchSize(size = 20)
     private List<AgentEntity> agents = new ArrayList<AgentEntity>();
 
@@ -38,6 +36,15 @@ public class AgentProviderEntity
 
     private String apiKey;
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+        this.setUserId(user.getId());
+    }
+
     public String getId() {
         return id;
     }
@@ -46,16 +53,16 @@ public class AgentProviderEntity
         this.id = id;
     }
 
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public void setName(String providerName) {
@@ -92,7 +99,8 @@ public class AgentProviderEntity
 
     @Override
     public String toString() {
-        return "AgentProviderEntity{" + "id='" + id + '\'' + ", user=" + user + ", agents=" + agents + ", name='" + name + '\'' + ", baseUrl='" + baseUrl + '\'' + ", apiKey='" + apiKey + '\'' + '}';
+        return "AgentProviderEntity{" + "id='" + id + '\'' + ", user=" + user + ", agents=" + agents + ", name='" +
+               name + '\'' + ", baseUrl='" + baseUrl + '\'' + ", apiKey='" + apiKey + '\'' + '}';
     }
 
 

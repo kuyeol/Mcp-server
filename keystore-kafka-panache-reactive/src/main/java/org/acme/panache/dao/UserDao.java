@@ -2,6 +2,8 @@ package org.acme.panache.dao;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.acme.panache.entity.AgentProviderEntity;
 import org.acme.panache.entity.UserEntity;
@@ -28,18 +30,38 @@ public class UserDao
         UserDao.em = em;
     }
 
+    @Transactional
     public Optional<UserEntity> getFromUserId(String id) {
         return Optional.ofNullable(em.find(UserEntity.class, id));
 
     }
 
+    @Transactional
     public Optional<UserEntity> getFromUserName(String name) {
 
-        Optional<UserEntity> userEntity = em.createNamedQuery("findByName", UserEntity.class)
-                                            .setParameter("name", name)
-                                            .getResultStream()
-                                            .findFirst();
-        return userEntity;
+        return em.createNamedQuery("findByName", UserEntity.class)
+                 .setParameter("name", name)
+                 .getResultStream()
+                 .findFirst();
+
+    }
+
+    @Transactional
+    public List<AgentProviderEntity> getFromProviderByUserId(String userId) {
+
+        return em.createNamedQuery("findByUserId", AgentProviderEntity.class)
+                 .setLockMode(LockModeType.PESSIMISTIC_WRITE)
+                 .setParameter("userId", userId)
+                 .getResultStream()
+                 .collect(Collectors.toList());
+
+    }
+
+    public List<ProviderRecord> findProviderByUserId(String userId) {
+
+        List<AgentProviderEntity> providers = new LinkedList<>(getFromProviderByUserId(userId));
+
+        return new LinkedList<>(providers.stream().map(ProviderRecord :: from).toList());
     }
 
     public UserRecord findUserByName(String name) {
@@ -52,27 +74,6 @@ public class UserDao
         UserEntity userEntity = getFromUserId(userId).orElseThrow(() -> new ModelException("User not found"));
 
         return UserRecord.from(userEntity);
-    }
-
-    public List<AgentProviderEntity> getFromProviderName(String name) {
-
-        return em.createNamedQuery("findByProviderName", AgentProviderEntity.class)
-                 .setParameter("name", name)
-                 .getResultStream()
-                 .collect(Collectors.toList());
-
-    }
-
-    public List<ProviderRecord> findByProviderName(String name) {
-
-        if (getFromProviderName(name).isEmpty()) {
-            throw new ModelException("Provider Not Found");
-        }
-
-        List<AgentProviderEntity> providerList = new LinkedList<>(getFromProviderName(name));
-
-        return new LinkedList<>(providerList.stream().map(ProviderRecord :: from).toList());
-
     }
 
     @Transactional
@@ -101,28 +102,43 @@ public class UserDao
     @Transactional
     public ProviderRecord addProvider(ProviderRecord provider, String name) {
 
-        if (getFromUserName(name).isEmpty()) {
-            throw new ModelException("User Not Found");
+        UserEntity user = getFromUserName(name).orElseThrow(() -> new ModelException("User not found"));
+
+        if (doesProviderExist(user.getId(), provider.providerName(), provider.baseUrl())) {
+            throw new ModelException( // 구체적 예외 및 메시지
+                                      String.format("Provider with name '%s' and URL '%s' already exists for user '%s'",
+                                                    provider.providerName(), provider.baseUrl(), name));
         }
-        if (getFromUserName(name).get()
-                                 .getAgentProviders()
-                                 .stream()
-                                 .anyMatch(p -> p.getName().equals(provider.name()) && p.getBaseUrl()
-                                                                                        .equals(provider.baseUrl()))) {
-            throw new ModelException("Provider  Aleady Exist");
-        }
-
-        String userId = getFromUserName(name).get().getId();
-
-        UserEntity ref = em.getReference(UserEntity.class, userId);
-
         AgentProviderEntity agentProvider = provider.toAgentProviderEntity();
-        agentProvider.setId(IdGenerater.create());
-        agentProvider.setUser(ref);
-        ref.addProvider(agentProvider);
-        em.persist(ref);
 
-        return provider.from(agentProvider);
+        agentProvider.setId(IdGenerater.create());
+        agentProvider.setUser(user);
+        user.addProvider(agentProvider);
+        em.persist(agentProvider);
+        return ProviderRecord.from(agentProvider);
+    }
+
+    @Transactional
+    public String deleteProvider(String userId, String providerId) {
+        AgentProviderEntity provider = getFromProviderByUserId(userId).stream()
+                                                                      .filter(p -> p.getId().equals(providerId))
+                                                                      .findFirst()
+                                                                      .orElse(null);
+
+        em.remove(provider);
+
+        return provider.getName();
+
+    }
+
+    private boolean doesProviderExist(String userId, String providerName, String baseUrl) {
+        String jpql = "SELECT COUNT(p) FROM AgentProviderEntity p " +
+                      "WHERE p.user.id = :userId AND p.name = :providerName AND p.baseUrl = :baseUrl";
+        TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+        query.setParameter("userId", userId);
+        query.setParameter("providerName", providerName);
+        query.setParameter("baseUrl", baseUrl);
+        return query.getSingleResult() > 0;
     }
 
     // updata Entity

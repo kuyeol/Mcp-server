@@ -11,7 +11,7 @@ public record UserRecord(String id, String name)
 {
 
     public static UserRecord from(UserEntity entity){
-        return new UserRecord("****", entity.getName());
+        return new UserRecord(entity.getId(), entity.getName());
     }
 
 
