@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Entity
+@NamedQuery(name = "findByName",query = "select u from UserEntity u where name =:name")
 public class UserEntity
 {
 
@@ -19,8 +20,8 @@ public class UserEntity
     private String id;
 
 
-    @Fetch(FetchMode.SELECT)
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "user")
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     @BatchSize(size = 20)
     private List<AgentProviderEntity> agentProviders = new LinkedList<>();
 
