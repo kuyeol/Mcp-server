@@ -19,9 +19,7 @@ public class UserEntity
     @Access(AccessType.PROPERTY)
     private String id;
 
-
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user",fetch = FetchType.LAZY)
     @BatchSize(size = 20)
     private List<AgentProviderEntity> agentProviders = new LinkedList<>();
 

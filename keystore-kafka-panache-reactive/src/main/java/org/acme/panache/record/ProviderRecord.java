@@ -2,7 +2,7 @@ package org.acme.panache.record;
 
 import org.acme.panache.entity.AgentProviderEntity;
 
-public record ProviderRecord(String id, String name, String baseUrl, String apiKey)
+public record ProviderRecord(String id, String providerName, String baseUrl, String apiKey)
 {
 
     public static ProviderRecord from(AgentProviderEntity provider)
@@ -14,7 +14,7 @@ public record ProviderRecord(String id, String name, String baseUrl, String apiK
     {
         AgentProviderEntity agentProviderEntity = new AgentProviderEntity();
         agentProviderEntity.setId(id);
-        agentProviderEntity.setName(name);
+        agentProviderEntity.setName(providerName);
         agentProviderEntity.setBaseUrl(baseUrl);
         agentProviderEntity.setApiKey(apiKey);
 

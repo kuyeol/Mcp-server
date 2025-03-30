@@ -1,3 +1,20 @@
+  
+# N+1 쿼리 문제 
+```
+@NamedQuery(name="getRealmUserByUsername", query="select u from UserEntity u where u.username = :username and u.realmId = :realmId")
+```
+> 관계 없음
+
+## 락모드 사용 
+> N+1조인 문제 해결
+`LockModeType.PESSIMISTIC_WRITE`
+
+
+
+
+@JoinColumn(name = "USERENTITY_ID")
+
+
 __https://shiftasia.com/community/kafka-and-intergrate-with-quarkus__
 
 
