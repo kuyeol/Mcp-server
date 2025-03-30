@@ -24,7 +24,7 @@ public class PriceGenerator
     return Multi.createFrom()
                 .ticks()
                 .every(Duration.ofNanos(1))
-                .map(tick -> random.nextInt(100));
+                .map(tick -> random.nextInt(111111100));
   }
 
 }
