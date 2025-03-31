@@ -11,7 +11,7 @@ public class PriceStorage
 
     static double price;
 
-    @Incoming("prices")
+
     @ActivateRequestContext
     Uni<Void> store(int priceInUsd) {
 
