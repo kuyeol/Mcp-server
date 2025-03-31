@@ -17,6 +17,8 @@
 
 __https://shiftasia.com/community/kafka-and-intergrate-with-quarkus__
 
+# Ref Link
+- quarkus https://docs.quarkiverse.io/quarkus-mcp-server/dev/index.html
 
 # // TODO : 
 - Database Entity Structure 
