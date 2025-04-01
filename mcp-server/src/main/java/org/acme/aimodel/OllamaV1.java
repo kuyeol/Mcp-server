@@ -14,7 +14,7 @@ import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
 @ApplicationScoped
-public class OllamaProvider
+public class OllamaV1
 {
 
   static String MODEL_GEMMA3 = "gemma3:4b"; // try other local ollama model names
@@ -35,7 +35,7 @@ public class OllamaProvider
   private final ChatLanguageModel          granite3;
   private final ChatLanguageModel          phi4;
 
-  public OllamaProvider()
+  public OllamaV1()
   {
     this.phi4 = OllamaChatModel.builder()
                                .baseUrl(BASE_URL)

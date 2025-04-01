@@ -14,7 +14,17 @@
   - Changes: Improved performance by caching Langchain4j model data. Added a new method `cacheModelData()` to the `AIQuarkus` class to handle caching.
 
 
-
+# 효과적인 프롬프트를 작성 키워드 참고
+- 역할 정의 - "Act as", "You are", "Assume the role of" 등의 표현으로 AI에게 특정 역할이나 전문가 관점을 부여
+- 형식 지정 - "Format your response as", "Structure your answer using", "Present in the form of" 등으로 원하는 출력 형식 지정
+- 단계 요청 - "Step by step", "First... Then...", "Break down" 등으로 단계적 사고 유도
+- 상세도 제어 - "Detailed", "Brief", "Comprehensive", "Concise" 등으로 답변의 길이와 깊이 조절
+- 예시 요청 - "Provide examples", "Illustrate with", "Show a case of" 등으로 실제 예시 요청
+- 대상층 지정 - "Explain to a beginner", "Write for experts in", "Make it understandable to" 등으로 난이도 조절
+- 맥락 제공 - "Given the context", "In the situation where", "Considering that" 등으로 상황 배경 설명
+- 비교 분석 - "Compare and contrast", "Differentiate between", "What are the pros and cons" 등으로 여러 관점 분석 유도
+- 출력 제한 - "Limit to X words/points", "No more than", "Keep it under" 등으로 답변의 범위 제한
+- 관점 지정 - "From the perspective of", "According to", "Following the principles of" 등으로 특정 관점 요청
 
 
 # code-with-quarkus

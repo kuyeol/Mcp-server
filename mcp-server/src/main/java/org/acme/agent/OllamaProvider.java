@@ -35,36 +35,52 @@ public class OllamaProvider
   private final ChatLanguageModel          granite3;
   private final ChatLanguageModel          phi4;
   private final ChatLanguageModel          mistral;
+  private final ChatLanguageModel          smollm2;
+  private final ChatLanguageModel          nemotron;
+
 
   public OllamaProvider()
   {
+
+    this.nemotron = OllamaChatModel.builder()
+                                  .baseUrl(BASE_URL)
+                                  .modelName("nemotron-mini")
+                                  .temperature(0.1)
+                                  .build();
+
+
+    this.smollm2 = OllamaChatModel.builder()
+                                  .baseUrl(BASE_URL)
+                                  .modelName("smollm2")
+                                  .temperature(0.1)
+                                  .build();
+
+
     this.mistral = OllamaChatModel.builder()
                                   .baseUrl(BASE_URL)
                                   .modelName("mistral")
                                   .logRequests(true)
                                   .logResponses(true)
-                                  .temperature(0.0)
+                                  .temperature(0.1)
                                   .build();
 
     this.phi4 = OllamaChatModel.builder()
                                .baseUrl(BASE_URL)
                                .modelName("phi4-mini")
-                               .logRequests(true)
-                               .logResponses(true)
-                               .temperature(0.0)
+                               .temperature(0.1)
                                .build();
 
     this.granite3 = OllamaChatModel.builder()
                                    .baseUrl(BASE_URL)
                                    .modelName("granite3-dense:2b")
-                                   .temperature(0.0)
+                                   .temperature(0.1)
                                    .timeout(Duration.ofSeconds(60000))
                                    .build();
 
     this.groq = OllamaChatModel.builder()
                                .baseUrl(BASE_URL)
                                .modelName(MODEL_GROQ)
-                               .temperature(0.0)
+                               .temperature(0.1)
                                .timeout(Duration.ofSeconds(60000))
                                .build();
 
@@ -72,7 +88,7 @@ public class OllamaProvider
     this.llama = OllamaChatModel.builder()
                                 .baseUrl(BASE_URL)
                                 .modelName(MODEL_LLAMA3)
-                                .temperature(0.0)
+                                .temperature(0.1)
                                 .logRequests(true)
                                 .logResponses(true)
                                 .build();
@@ -103,8 +119,17 @@ public class OllamaProvider
     this.streamModel = OllamaStreamingChatModel.builder()
                                                .baseUrl(BASE_URL)
                                                .modelName(MODEL_GEMMA3)
-                                               .temperature(0.0)
+                                               .temperature(0.1)
                                                .build();
+  }
+
+  public ChatLanguageModel getNemotron() {
+    return this.nemotron;
+  }
+
+
+  public ChatLanguageModel getSmollm2() {
+    return this.smollm2;
   }
 
 
