@@ -79,7 +79,7 @@ public class ExampleResource
 
     ChatLanguageModel model        = new OllamaProvider().getLlama();
 //    ToolProvider   toolProvider = McpToolProvider.builder().mcpClients(List.of(toolBox())).build();
-//
+
 //    MinioAgent        bot          = AiServices.builder(Bot.class).chatLanguageModel(model).toolProvider(toolBox()).build();
 
     return Response.ok().build();
