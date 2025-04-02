@@ -87,5 +87,7 @@ If you want to learn more about building native executables, please consult <htt
 ### REST
 
 Easily start your REST Web Services
-
+![img.png](img.png)
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
