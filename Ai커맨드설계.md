@@ -18,23 +18,27 @@
 
 e.g)
 
+```java
 enum class language{
 java,python....
 //버전 추가
 }
+```
 
-
+```java
 enum class platform{
 Web,Android,Linux...
 }
+```
 
+```java
 
 abstract class AppFactory{
-요구 사항을 구조화 하여 빌드
-생성 내용으로 에이전트 작업 지시
-
+//요구 사항을 구조화 하여 빌드
+//생성 내용으로 에이전트 작업 지시
 }
 
+```
 interface Spring{
 void WebApp();
 void Microservice();
