@@ -11,6 +11,16 @@ TODO :
 생각: 경로에 파일 생성하지 않고 응답 객체를 미니오에 바로 업로드 하면???
 
 
+> 사용중인 윈도우 파일시스템 
+> - URI를 사용해 브라우저에서 볼 수 있다
+> > `file:///D:/Project_Git/Back/`
+
+### 오라클 자바 파일 스트림 참고
+- https://dev.java/learn/modernio/
+### 미나이오 문서
+- https://min.io/docs/minio/linux/developers/java/minio-java.html
+- https://min.io/docs/minio/linux/developers/java/API.html#uploadObject
+
 
 
 
@@ -109,6 +119,11 @@ NIO (Non-Blocking I/O)
 - 경로 구성 , 파일명
     - 경로와 내용 인수 전달
     - 생성
+  
+ 파일 생성
+ 파일 읽기
+ 스트림
+ http
 
 ```java
 
