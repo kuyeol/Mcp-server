@@ -87,6 +87,7 @@ public class DefaultService
                                               .chatLanguageModel(gemini)
                                               .tools(myTools)
                                               .build();
+
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
         List<CompletableFuture<String>> futures = IntStream.range(0, 10).mapToObj(i -> {
             CompletableFuture<String> future = new CompletableFuture<>();
@@ -109,8 +110,7 @@ public class DefaultService
 
         ChatLanguageModel model = new GeminiFactory().getGemini2();
 
-        McpTransport transport = new StdioMcpTransport.Builder().command(
-                List.of("file.txt")).build();
+        McpTransport transport = new StdioMcpTransport.Builder().command(List.of("file.txt")).build();
 
         McpClient mcpClient = new DefaultMcpClient.Builder().transport(transport).build();
 

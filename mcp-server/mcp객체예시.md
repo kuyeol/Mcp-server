@@ -1,6 +1,8 @@
 
 
 
+
+
 ```TypeScript
 import { z } from "zod";
 import { githubRequest, buildUrl } from "../common/utils.js";
@@ -14,7 +16,7 @@ export const ListCommitsSchema = z.object({
 });
 
 export async function listCommits(
-  owner: string,
+  owner: string,;
   repo: string,
   page?: number,
   perPage?: number,
