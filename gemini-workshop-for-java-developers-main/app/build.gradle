@@ -1,0 +1,50 @@
+plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
+}
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+dependencies {
+    // Logging library
+    implementation 'org.slf4j:slf4j-jdk14:2.0.16'
+
+    // This dependency is used by the application.
+    implementation 'dev.langchain4j:langchain4j:1.0.0-alpha1'
+    implementation 'dev.langchain4j:langchain4j-vertex-ai:1.0.0-alpha1'
+    implementation 'dev.langchain4j:langchain4j-vertex-ai-gemini:1.0.0-alpha1'
+    implementation 'dev.langchain4j:langchain4j-document-parser-apache-pdfbox:1.0.0-alpha1'
+
+    // Gemma via Ollama and TestContainers
+    implementation 'dev.langchain4j:langchain4j-ollama:1.0.0-alpha1'
+    implementation 'org.testcontainers:ollama:1.20.4'
+}
+
+testing {
+    suites {
+        // Configure the built-in test suite
+        test {
+            // Use JUnit Jupiter test framework
+            useJUnitJupiter('5.11.4')
+        }
+    }
+}
+
+// Apply a specific Java toolchain to ease working on different environments.
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << '-parameters'
+}
+
+application {
+    mainClass = providers.systemProperty('javaMainClass')
+                         .orElse('gemini.workshop.App')
+}
