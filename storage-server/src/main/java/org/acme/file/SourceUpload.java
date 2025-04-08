@@ -42,8 +42,9 @@ public class SourceUpload
                                          .object(fileName)
                                          .stream(stream, stream.available(), -1)
                                          .build());
-        }catch (InvalidKeyException | IOException | InsufficientDataException | InternalException |
-                NoSuchAlgorithmException | XmlParserException e) {
+
+        } catch (InvalidKeyException | IOException | InsufficientDataException | InternalException |
+                 NoSuchAlgorithmException | XmlParserException e) {
             throw new RuntimeException(e);
         }
     }

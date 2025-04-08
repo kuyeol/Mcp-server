@@ -1,2 +1,2 @@
-org/acme/GreetingResourceTest.class
-org/acme/GreetingResourceIT.class
+org\acme\GreetingResourceTest.class
+org\acme\GreetingResourceIT.class
