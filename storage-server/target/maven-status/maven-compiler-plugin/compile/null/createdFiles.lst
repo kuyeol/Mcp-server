@@ -1,1 +1,7 @@
+org\acme\NewCli.class
+org\acme\MainApp.class
+org\acme\GreetingService.class
 org\acme\GreetingResource.class
+org\acme\CommandApp.class
+org\acme\file\SourceUpload.class
+org\acme\kafka\KafkaPublisher.class
