@@ -1,3 +1,20 @@
+# Kafka Architecture
+
+Produce
+- aiMessage
+  - Generate -> Consumer 
+
+Process
+
+Consume
+- aiMessage
+  - Producer -> MinioUpload
+
+
+
+
+
+
 # kafka
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.

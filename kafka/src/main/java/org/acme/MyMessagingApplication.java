@@ -1,101 +1,183 @@
 package org.acme;
 
-import io.quarkus.runtime.StartupEvent;
-import io.smallrye.common.annotation.Identifier;
-import io.smallrye.reactive.messaging.kafka.KafkaClientService;
-import io.smallrye.reactive.messaging.kafka.KafkaProducer;
+import io.smallrye.reactive.messaging.kafka.api.OutgoingKafkaRecordMetadata;
+import io.vertx.core.Vertx;
+import io.vertx.kafka.client.common.PartitionInfo;
+import io.vertx.kafka.client.common.TopicPartition;
+import io.vertx.kafka.client.consumer.KafkaConsumer;
+import io.vertx.kafka.client.consumer.KafkaConsumerRecord;
+import io.vertx.kafka.client.producer.KafkaProducer;
+import io.vertx.kafka.client.producer.KafkaProducerRecord;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
-import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
-import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.AdminClientConfig;
-import org.apache.kafka.clients.admin.KafkaAdminClient;
-import org.apache.kafka.clients.admin.NewTopic;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.eclipse.microprofile.reactive.messaging.*;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
-import jakarta.inject.Inject;
+import org.eclipse.microprofile.reactive.messaging.Message;
 
-import org.apache.kafka.clients.producer.ProducerRecord;
-
-import io.quarkus.runtime.StartupEvent;
-import io.smallrye.reactive.messaging.kafka.KafkaClientService;
-import io.smallrye.reactive.messaging.kafka.KafkaConsumer;
-import io.smallrye.reactive.messaging.kafka.KafkaProducer;
-
-import java.util.Collection;
+import java.time.Duration;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.stream.Stream;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 @ApplicationScoped
 public class MyMessagingApplication
 {
 
     @Inject
-    @Channel("words-out")
-    Emitter<String> emitter;
+    Vertx vertx;
 
-    /**
-     * Sends message to the "words-out" channel, can be used from a JAX-RS resource or any bean of your application.
-     * Messages are sent to the broker.
-     **/
-    void onStart(
-            @Observes
-            StartupEvent ev)
-    {
-        Stream.of("Hello", "with", "Quarkus", "Messaging", "message").forEach(string -> emitter.send(string));
-        createTopic(ev.toString());
-    }
+    static Map<String, String> configVx = new HashMap<>();
 
-    /**
-     * Consume the message from the "words-in" channel, uppercase it and send it to the uppercase channel.
-     * Messages come from the broker.
-     **/
-    @Incoming("words-in")
-    @Outgoing("uppercase")
-    public Message<String> toUpperCase(Message<String> message) {
-        return message.withPayload(message.getPayload().toUpperCase());
-    }
+    KafkaConsumer<String, String> consumer;
 
-    /**
-     * Consume the uppercase channel (in-memory) and print the messages.
-     **/
-    @Incoming("uppercase")
-    public void sink(String word) {
-        System.out.println(">> " + word);
-    }
+    KafkaProducer<String, String> producer;
 
-    @Inject
-    @Identifier("default-kafka-broker")
-    Map<String, Object> config;
+    public void createClient() {
 
-    @Produces
-    AdminClient getAdmin() {
-        Map<String, Object> copy = new HashMap<>();
-        for (Map.Entry<String, Object> entry : config.entrySet()) {
-            if (AdminClientConfig.configNames().contains(entry.getKey())) {
-                copy.put(entry.getKey(), entry.getValue());
+        configVx.put("bootstrap.servers", "182.218.135.247:29092");
+        configVx.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        configVx.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        configVx.put("group.id", "my_group");
+        configVx.put("auto.offset.reset", "earliest");
+        configVx.put("enable.auto.commit", "false");
+        // Start with a copy of common settings if needed
+        configVx.put("key.deserializer", "io.vertx.kafka.client.serialization.JsonObjectDeserializer");
+        configVx.put("value.deserializer", "io.vertx.kafka.client.serialization.JsonObjectDeserializer");
+        configVx.put("group.id", "my_group");
+        configVx.put("auto.offset.reset", "earliest");
+        configVx.put("enable.auto.commit", "false");
+        configVx.put("key.serializer", "io.vertx.kafka.client.serialization.BufferSerializer");
+        configVx.put("value.serializer", "io.vertx.kafka.client.serialization.BufferSerializer");
+        configVx.put("acks", "1");
+        configVx.put("key.serializer", "io.vertx.kafka.client.serialization.JsonObjectSerializer");
+        configVx.put("value.serializer", "io.vertx.kafka.client.serialization.JsonObjectSerializer");
+        configVx.put("acks", "1");
+
+                     consumer.handler(record -> {
+                         System.out.println(
+                                 "Processing key=" + record.key() + ",value=" + record.value() + ",partition=" +
+                                 record.partition() + ",offset=" + record.offset());
+                     });
+
+        // subscribe to several topics with list
+        Set<String> topics = new HashSet<>();
+        topics.add("topic1");
+        topics.add("topic2");
+        topics.add("topic3");
+        topics.add("test");
+        consumer.subscribe(topics)
+                .onSuccess(v -> System.out.println("subscribed"))
+                .onFailure(cause -> System.out.println("Could not subscribe " + cause.getMessage()));
+        // or using a Java regex
+        Pattern pattern = Pattern.compile("topic\\d");
+        consumer.subscribe(pattern);
+
+        // or just subscribe to a single topic
+        consumer.subscribe("a-single-topic");
+
+        consumer.subscribe("test").onSuccess(v -> {
+            System.out.println("Consumer subscribed");
+
+            // Let's poll every second
+            vertx.setPeriodic(1000, timerId -> consumer.poll(Duration.ofMillis(100)).onSuccess(records -> {
+                for (int i = 0; i < records.size(); i++) {
+                    KafkaConsumerRecord<String, String> record = records.recordAt(i);
+                    System.out.println(
+                            "key=" + record.key() + ",value=" + record.value() + ",partition=" + record.partition() +
+                            ",offset=" + record.offset());
+                }
+            }).onFailure(cause -> {
+                System.out.println("Something went wrong when polling " + cause.toString());
+                cause.printStackTrace();
+
+                // Stop polling if something went wrong
+                vertx.cancelTimer(timerId);
+            }));
+        });
+        consumer.commit().onSuccess(v -> System.out.println("Last read message offset committed"));
+
+        TopicPartition topicPartition2 = new TopicPartition().setTopic("test").setPartition(0);
+
+        // registering the handler for incoming messages
+        consumer.handler(record -> {
+            System.out.println("key=" + record.key() + ",value=" + record.value() + ",partition=" + record.partition() +
+                               ",offset=" + record.offset());
+
+            // i.e. pause/resume on partition 0, after reading message up to offset 5
+            if (( record.partition() == 0 ) && ( record.offset() == 5 )) {
+
+                // pause the read operations
+                consumer.pause(topicPartition2)
+                        .onSuccess(v -> System.out.println("Paused"))
+                        .onSuccess(v -> vertx.setTimer(5000, timeId ->
+                                // resume read operations
+                                consumer.resume(topicPartition2)));
             }
+
+            consumer.close()
+                    .onSuccess(v -> System.out.println("Consumer is now closed"))
+                    .onFailure(cause -> System.out.println("Close failed: " + cause));
+        });
+    }
+
+    public void makeProducer() {
+        producer = KafkaProducer.create(vertx, configVx);
+        //
+        for (int i = 0; i < 5; i++) {
+
+            int key = i % 2;
+
+            // only topic and message value are specified, round robin on destination partitions
+            KafkaProducerRecord<String, String> record = KafkaProducerRecord.create("test", String.valueOf(key),
+                                                                                    "message_", 0);
+
+            producer.send(record)
+                    .onSuccess(recordMetadata -> System.out.println(
+                            "Message " + record.value() + " written on topic=" + recordMetadata.getTopic() +
+                            ", partition=" + recordMetadata.getPartition() + ", offset=" + recordMetadata.getOffset()));
         }
-        return KafkaAdminClient.create(copy);
+
+        producer.close()
+                .onSuccess(v -> System.out.println("Producer is now closed"))
+                .onFailure(cause -> System.out.println("Close failed: " + cause));
     }
 
-    public void createTopic(NewTopic topic) {
-        NewTopic newTopic = new NewTopic(topic.name(), topic.numPartitions(), topic.replicationFactor());
-        Collection<NewTopic> topics = List.of(newTopic);
-        getAdmin().createTopics(topics);
+    public void createTopic(String topicName) {
+        short part = 1;
+
+        consumer = KafkaConsumer.create(vertx, configVx);
+        consumer.partitionsFor("test").onSuccess(partitions -> {
+            for (PartitionInfo partitionInfo : partitions) {
+                System.out.println();
+                System.out.println("\t" + partitionInfo);
+                System.out.println();
+            }
+        });
+        consumer.listTopics().onSuccess(partitionsTopicMap -> partitionsTopicMap.forEach((topic, partitions) -> {
+            System.out.println("\t\n");
+            System.out.println("\t topic = " + topic);
+            System.out.println("\t");
+            System.out.println("\t partitions = \t" + partitions);
+            System.out.println("\t");
+        }));
+
+        consumer.commit().onSuccess(v -> System.out.println("Last read message offset committed"));
+
     }
 
-public void createTopic(String topicName){
-        short part =1;
-    NewTopic topic = new NewTopic(topicName, part, (short) 1);
-    Collection<NewTopic> topics = List.of(topic);
-    getAdmin().createTopics(topics);
+    public String selectTopicFromIncommingMessage(Message<String> incoming) {
+        return "string";
+    }
 
-}
+    public Message<String> addMetadata(Message<String> incoming) {
+        String topicName = selectTopicFromIncommingMessage(incoming);
+        OutgoingKafkaRecordMetadata<String> metadata = OutgoingKafkaRecordMetadata.<String>builder()
+                                                                                  .withTopic(topicName)
+                                                                                  .build();
+        return incoming.addMetadata(metadata);
+    }
+
+
+
 
 }
