@@ -1,9 +1,12 @@
 package org.acme;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import org.apache.kafka.clients.admin.NewTopic;
+import org.eclipse.microprofile.reactive.messaging.Message;
 
 @Path("/resource")
 public class Resource
@@ -26,13 +29,21 @@ public class Resource
     @Path("/createTopic")
 
     public Response test1(String topic) {
-        NewTopic newTopic  = new NewTopic(topic, topic.length(), (short) topic.length());
-        application.createTopic(newTopic.name());
+
+        application.createClient();
 
         return Response.ok("newTopic").build();
 
     }
 
+
+    @GET
+    @Path("makeProducer")
+    public void producer(){
+
+        application.makeProducer();
+
+    }
 
 
 
