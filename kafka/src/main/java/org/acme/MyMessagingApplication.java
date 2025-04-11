@@ -10,6 +10,7 @@ import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.kafka.client.producer.KafkaProducerRecord;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.reactive.messaging.Message;
 
 import java.time.Duration;
@@ -32,6 +33,28 @@ public class MyMessagingApplication
 
     KafkaProducer<String, String> producer;
 
+    @Inject
+    @ConfigProperty(name = "kafka.bootstrap.servers")
+    String bootstrapServers;
+
+    @Inject
+    @ConfigProperty(name = "kafka.group.id")
+    String groupId;
+
+    private Map<String, String> createKafkaConfig() {
+        Map<String, String> config = new HashMap<>();
+        config.put("bootstrap.servers", bootstrapServers);
+        config.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        config.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        config.put("group.id", groupId);
+        config.put("auto.offset.reset", "earliest");
+        config.put("enable.auto.commit", "false");
+        config.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        config.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        config.put("acks", "1");
+        return config;
+    }
+
     public void createClient() {
 
         configVx.put("bootstrap.servers", "182.218.135.247:29092");
@@ -53,13 +76,9 @@ public class MyMessagingApplication
         configVx.put("value.serializer", "io.vertx.kafka.client.serialization.JsonObjectSerializer");
         configVx.put("acks", "1");
 
-                     consumer.handler(record -> {
-                         System.out.println(
-                                 "Processing key=" + record.key() + ",value=" + record.value() + ",partition=" +
-                                 record.partition() + ",offset=" + record.offset());
-                     });
+        consumer = KafkaConsumer.create(vertx, createKafkaConfig());
 
-        // subscribe to several topics with list
+        // subscribe to several topics with lists
         Set<String> topics = new HashSet<>();
         topics.add("topic1");
         topics.add("topic2");
@@ -70,8 +89,14 @@ public class MyMessagingApplication
                 .onFailure(cause -> System.out.println("Could not subscribe " + cause.getMessage()));
         // or using a Java regex
         Pattern pattern = Pattern.compile("topic\\d");
+
         consumer.subscribe(pattern);
 
+        consumer.handler(record -> {
+            System.out.println(
+                    "Processing key=" + record.key() + ",value=" + record.value() + ",partition=" + record.partition() +
+                    ",offset=" + record.offset());
+        });
         // or just subscribe to a single topic
         consumer.subscribe("a-single-topic");
 

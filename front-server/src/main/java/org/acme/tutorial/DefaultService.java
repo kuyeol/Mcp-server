@@ -2,23 +2,15 @@ package org.acme.tutorial;
 
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.mcp.McpToolProvider;
-import dev.langchain4j.mcp.client.DefaultMcpClient;
-import dev.langchain4j.mcp.client.McpClient;
-import dev.langchain4j.mcp.client.transport.McpTransport;
-import dev.langchain4j.mcp.client.transport.stdio.StdioMcpTransport;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.chat.request.ChatRequest;
 import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.service.AiServices;
-import dev.langchain4j.service.tool.ToolProvider;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.acme.agent.Bot;
 import org.acme.agent.GeminiFactory;
 import org.acme.agent.OllamaProvider;
 
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
@@ -46,7 +38,7 @@ public class DefaultService
 
     public static ToolSupport myTools = new ToolSupport();
 
-    public String requests(String message) {
+    public String requestMessage(String message) {
         ChatLanguageModel gemini = geminiProvider.getGeminiLite();
 
         ChatLanguageModel toolAgent = ollamaProvider.getNemotron();
@@ -80,7 +72,8 @@ public class DefaultService
         return response.aiMessage();
     }
 
-    public List<String> asyncMessages(String message) {
+    public List<String> repeatRequestMessages(String message) {
+
         ChatLanguageModel gemini = geminiProvider.getGeminiLite();
 
         AgentService agentService = AiServices.builder(AgentService.class)
@@ -100,31 +93,6 @@ public class DefaultService
         List<String> responses = futures.stream().map(CompletableFuture :: join).collect(Collectors.toList());
 
         return responses;
-    }
-
-    public static final String FILE_TO_BE_READ = "src/main/resources/file.txt";
-
-    public static void main(String[] args)
-    throws Exception
-    {
-
-        ChatLanguageModel model = new GeminiFactory().getGemini2();
-
-        McpTransport transport = new StdioMcpTransport.Builder().command(List.of("file.txt")).build();
-
-        McpClient mcpClient = new DefaultMcpClient.Builder().transport(transport).build();
-
-        ToolProvider toolProvider = McpToolProvider.builder().mcpClients(List.of(mcpClient)).build();
-
-        Bot bot = AiServices.builder(Bot.class).chatLanguageModel(model).toolProvider(toolProvider).build();
-
-        try {
-            File   file     = new File(FILE_TO_BE_READ);
-            String response = bot.chat("Read the contents of the file " + file.getAbsolutePath());
-            System.out.println("RESPONSE: " + response);
-        } finally {
-            mcpClient.close();
-        }
     }
 
 
